@@ -1,0 +1,5 @@
+- dest_ip: 127.0.0.1
+  dest_port: 12345
+  expected_result: open
+  name: Test Filtered TCP Port
+  protocol: tcp

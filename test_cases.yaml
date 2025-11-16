@@ -1,0 +1,23 @@
+- name: "Test DNS (UDP)"
+  dest_ip: "8.8.8.8"
+  dest_port: 53
+  protocol: "udp"
+  expected_result: "open|filtered"
+
+- name: "Test HTTP (TCP)"
+  dest_ip: "8.8.8.8"
+  dest_port: 80
+  protocol: "tcp"
+  expected_result: "open"
+
+- name: "Test HTTPS (TCP)"
+  dest_ip: "8.8.8.8"
+  dest_port: 443
+  protocol: "tcp"
+  expected_result: "open"
+
+- name: "Test Closed Port (TCP)"
+  dest_ip: "8.8.8.8"
+  dest_port: 12345
+  protocol: "tcp"
+  expected_result: "closed"

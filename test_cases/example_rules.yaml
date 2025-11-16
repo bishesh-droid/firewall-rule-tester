@@ -1,0 +1,65 @@
+# test_cases/example_rules.yaml
+
+# Example Firewall Test Cases
+# This file defines a set of rules to test a firewall's configuration.
+# Each test case specifies the traffic to simulate and the expected outcome.
+
+# IMPORTANT: For these tests to be meaningful, you need to run them from a machine
+# that is *outside* the firewall you are testing, and target an IP *behind* the firewall.
+# The 'dest_ip' should be an IP address of a machine behind the firewall.
+
+- name: "Allow HTTP to Web Server"
+  source_ip: "any" # For client-side testing, this is usually the tester's IP
+  dest_ip: "127.0.0.1" # Replace with your target web server IP
+  dest_port: 80
+  protocol: "tcp"
+  expected_result: "open" # Expect the port to be open
+
+- name: "Allow HTTPS to Web Server"
+  source_ip: "any"
+  dest_ip: "127.0.0.1" # Replace with your target web server IP
+  dest_port: 443
+  protocol: "tcp"
+  expected_result: "open"
+
+- name: "Block SSH to Internal Server"
+  source_ip: "any"
+  dest_ip: "127.0.0.1" # Replace with your target internal server IP
+  dest_port: 22
+  protocol: "tcp"
+  expected_result: "filtered" # Expect the port to be filtered (no response) or closed
+
+- name: "Block Telnet to Internal Server"
+  source_ip: "any"
+  dest_ip: "127.0.0.1"
+  dest_port: 23
+  protocol: "tcp"
+  expected_result: "filtered"
+
+- name: "Allow DNS Query (UDP)"
+  source_ip: "any"
+  dest_ip: "127.0.0.1" # Example public DNS server
+  dest_port: 53
+  protocol: "udp"
+  expected_result: "open|filtered" # UDP is often open|filtered if it responds or no ICMP unreachable
+
+- name: "Block Unknown UDP Port"
+  source_ip: "any"
+  dest_ip: "127.0.0.1"
+  dest_port: 12345
+  protocol: "udp"
+  expected_result: "closed" # Expect ICMP port unreachable
+
+- name: "Allow Custom App Port (TCP)"
+  source_ip: "any"
+  dest_ip: "127.0.0.1" # Replace with another internal server IP
+  dest_port: 8080
+  protocol: "tcp"
+  expected_result: "open"
+
+- name: "Block Custom App Port (TCP)"
+  source_ip: "any"
+  dest_ip: "127.0.0.1"
+  dest_port: 9000
+  protocol: "tcp"
+  expected_result: "filtered"
